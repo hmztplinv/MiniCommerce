@@ -11,16 +11,7 @@ public static class ServiceResultExtensions
             return Results.NoContent();
         }
 
-        if (result.ValidationErrors is not null)
-        {
-            return Results.ValidationProblem(result.ValidationErrors);
-        }
-
-        return Results.BadRequest(new
-        {
-            result.Error.Code,
-            result.Error.Message
-        });
+        return MapFailure(result);
     }
 
     public static IResult ToHttpResult<T>(this ServiceResult<T> result)
@@ -30,15 +21,27 @@ public static class ServiceResultExtensions
             return Results.Ok(result.Data);
         }
 
+        return MapFailure(result);
+    }
+
+    private static IResult MapFailure(ServiceResult result)
+    {
         if (result.ValidationErrors is not null)
         {
             return Results.ValidationProblem(result.ValidationErrors);
         }
 
+        if (result.Error.Code.EndsWith(".NotFound", StringComparison.OrdinalIgnoreCase))
+        {
+            return Results.NotFound(new
+            {
+                error = result.Error
+            });
+        }
+
         return Results.BadRequest(new
         {
-            result.Error.Code,
-            result.Error.Message
+            error = result.Error
         });
     }
 }

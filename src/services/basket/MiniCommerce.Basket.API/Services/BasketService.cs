@@ -63,7 +63,7 @@ public sealed class BasketService : IBasketService
         if (product is null)
         {
             return ServiceResult<BasketResponse>.Fail(
-                new Error("Basket.ProductNotFound", "Product was not found."));
+                new Error("Basket.Product.NotFound", "Product was not found."));
         }
 
         if (product.Stock <= 0)
@@ -148,7 +148,7 @@ public sealed class BasketService : IBasketService
         if (existingItem is null)
         {
             return ServiceResult<BasketResponse>.Fail(
-                new Error("Basket.ItemNotFound", "Basket item was not found."));
+                new Error("Basket.Item.NotFound", "Basket item was not found."));
         }
 
         var product = await _catalogClient.GetProductByIdAsync(
@@ -158,7 +158,7 @@ public sealed class BasketService : IBasketService
         if (product is null)
         {
             return ServiceResult<BasketResponse>.Fail(
-                new Error("Basket.ProductNotFound", "Product was not found."));
+                new Error("Basket.Product.NotFound", "Product was not found."));
         }
 
         if (request.Quantity > product.Stock)
@@ -206,7 +206,7 @@ public sealed class BasketService : IBasketService
         if (existingItem is null)
         {
             return ServiceResult<BasketResponse>.Fail(
-                new Error("Basket.ItemNotFound", "Basket item was not found."));
+                new Error("Basket.Item.NotFound", "Basket item was not found."));
         }
 
         shoppingCart.Items.Remove(existingItem);
