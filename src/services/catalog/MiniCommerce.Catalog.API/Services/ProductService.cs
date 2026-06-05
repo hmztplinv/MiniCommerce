@@ -2,6 +2,7 @@ using MiniCommerce.Catalog.API.DTOs;
 using MiniCommerce.Catalog.API.Entities;
 using MiniCommerce.Catalog.API.Repositories;
 using MiniCommerce.Shared.Common;
+using MongoDB.Bson;
 
 namespace MiniCommerce.Catalog.API.Services;
 
@@ -34,10 +35,11 @@ public sealed class ProductService : IProductService
         string id,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(id))
+        var idValidationResult = ValidateProductId(id);
+
+        if (idValidationResult is not null)
         {
-            return ServiceResult<ProductResponse>.Fail(
-                new Error("Product.InvalidId", "Product id is required."));
+            return ServiceResult<ProductResponse>.Fail(idValidationResult);
         }
 
         var product = await _productRepository.GetByIdAsync(id, cancellationToken);
@@ -87,10 +89,11 @@ public sealed class ProductService : IProductService
         UpdateProductRequest request,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(id))
+        var idValidationResult = ValidateProductId(id);
+
+        if (idValidationResult is not null)
         {
-            return ServiceResult<ProductResponse>.Fail(
-                new Error("Product.InvalidId", "Product id is required."));
+            return ServiceResult<ProductResponse>.Fail(idValidationResult);
         }
 
         var validationErrors = ValidateProductInput(
@@ -134,10 +137,11 @@ public sealed class ProductService : IProductService
         string id,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(id))
+        var idValidationResult = ValidateProductId(id);
+
+        if (idValidationResult is not null)
         {
-            return ServiceResult.Fail(
-                new Error("Product.InvalidId", "Product id is required."));
+            return ServiceResult.Fail(idValidationResult);
         }
 
         var deleted = await _productRepository.DeleteAsync(id, cancellationToken);
@@ -151,6 +155,21 @@ public sealed class ProductService : IProductService
         _logger.LogInformation("Product deleted. ProductId: {ProductId}", id);
 
         return ServiceResult.Success();
+    }
+
+    private static Error? ValidateProductId(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return new Error("Product.InvalidId", "Product id is required.");
+        }
+
+        if (!ObjectId.TryParse(id, out _))
+        {
+            return new Error("Product.InvalidId", "Product id format is invalid.");
+        }
+
+        return null;
     }
 
     private static ProductResponse MapToResponse(Product product)
