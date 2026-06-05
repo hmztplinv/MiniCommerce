@@ -1,0 +1,98 @@
+services:
+  minicomm.rabbitmq:
+    image: rabbitmq:3-management
+    container_name: minicomm.rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: minicomm
+      RABBITMQ_DEFAULT_PASS: minicomm123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - minicomm-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minicomm.mongodb:
+    image: mongo:7
+    container_name: minicomm.mongodb
+    ports:
+      - "27031:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: minicomm
+      MONGO_INITDB_ROOT_PASSWORD: minicomm123
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - minicomm-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minicomm.mongo-express:
+    image: mongo-express:1.0.2
+    container_name: minicomm.mongo-express
+    ports:
+      - "27032:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: minicomm
+      ME_CONFIG_MONGODB_ADMINPASSWORD: minicomm123
+      ME_CONFIG_MONGODB_URL: mongodb://minicomm:minicomm123@minicomm.mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    depends_on:
+      minicomm.mongodb:
+        condition: service_healthy
+    networks:
+      - minicomm-network
+
+  minicomm.redis:
+    image: redis:7
+    container_name: minicomm.redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - minicomm-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minicomm.postgres:
+    image: postgres:16
+    container_name: minicomm.postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: minicomm
+      POSTGRES_PASSWORD: minicomm123
+      POSTGRES_DB: orderdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - minicomm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U minicomm -d orderdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rabbitmq_data:
+  mongodb_data:
+  redis_data:
+  postgres_data:
+
+networks:
+  minicomm-network:
+    driver: bridge

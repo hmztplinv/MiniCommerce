@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{734C8E30-7E46-4CE3-AD40-9C408F5DDB56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{CE83956F-CF25-4346-B86E-177BE9947E64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniCommerce.Shared", "src\shared\MiniCommerce.Shared\MiniCommerce.Shared.csproj", "{29F4D549-3884-432D-B9D9-712B890892B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{BF93AFDA-4E7A-4823-B961-9C648674E389}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "catalog", "catalog", "{B3D6BF72-AB55-474E-9C70-6D581BBD4B82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniCommerce.Catalog.API", "src\services\catalog\MiniCommerce.Catalog.API\MiniCommerce.Catalog.API.csproj", "{9C7F996C-A74F-404B-823C-96CA1EE0AAA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29F4D549-3884-432D-B9D9-712B890892B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F4D549-3884-432D-B9D9-712B890892B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F4D549-3884-432D-B9D9-712B890892B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F4D549-3884-432D-B9D9-712B890892B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C7F996C-A74F-404B-823C-96CA1EE0AAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C7F996C-A74F-404B-823C-96CA1EE0AAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C7F996C-A74F-404B-823C-96CA1EE0AAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C7F996C-A74F-404B-823C-96CA1EE0AAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE83956F-CF25-4346-B86E-177BE9947E64} = {734C8E30-7E46-4CE3-AD40-9C408F5DDB56}
+		{29F4D549-3884-432D-B9D9-712B890892B0} = {CE83956F-CF25-4346-B86E-177BE9947E64}
+		{BF93AFDA-4E7A-4823-B961-9C648674E389} = {734C8E30-7E46-4CE3-AD40-9C408F5DDB56}
+		{B3D6BF72-AB55-474E-9C70-6D581BBD4B82} = {BF93AFDA-4E7A-4823-B961-9C648674E389}
+		{9C7F996C-A74F-404B-823C-96CA1EE0AAA6} = {B3D6BF72-AB55-474E-9C70-6D581BBD4B82}
+	EndGlobalSection
+EndGlobal
