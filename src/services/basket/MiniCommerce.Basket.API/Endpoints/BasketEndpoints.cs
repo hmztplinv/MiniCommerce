@@ -75,6 +75,27 @@ public static class BasketEndpoints
             return result.ToHttpResult();
         });
 
+        group.MapDelete("/items/{productId}", async (
+            string productId,
+            HttpContext httpContext,
+            IBasketService basketService,
+            CancellationToken cancellationToken) =>
+        {
+            var customerId = httpContext.GetCustomerId();
+
+            if (customerId is null)
+            {
+                return CustomerIdMissingResult();
+            }
+
+            var result = await basketService.RemoveItemAsync(
+                customerId,
+                productId,
+                cancellationToken);
+
+            return result.ToHttpResult();
+        });
+
         group.MapDelete("/", async (
             HttpContext httpContext,
             IBasketService basketService,

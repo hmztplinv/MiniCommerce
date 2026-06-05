@@ -20,6 +20,11 @@ public interface IBasketService
         UpdateBasketItemQuantityRequest request,
         CancellationToken cancellationToken = default);
 
+    Task<ServiceResult<BasketResponse>> RemoveItemAsync(
+        string customerId,
+        string productId,
+        CancellationToken cancellationToken = default);
+
     Task<ServiceResult> ClearBasketAsync(
         string customerId,
         CancellationToken cancellationToken = default);
