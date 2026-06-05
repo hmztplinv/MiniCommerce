@@ -1,12 +1,18 @@
 using MiniCommerce.Basket.API.Clients;
 using MiniCommerce.Basket.API.Endpoints;
+using MiniCommerce.Basket.API.Exceptions;
 using MiniCommerce.Basket.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddBasketInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.MapGet("/", () =>
 {
