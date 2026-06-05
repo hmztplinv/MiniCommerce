@@ -1,0 +1,8 @@
+namespace MiniCommerce.Basket.API.Options;
+
+public sealed class RedisOptions
+{
+    public const string SectionName = "Redis";
+
+    public string ConnectionString { get; set; } = string.Empty;
+}
